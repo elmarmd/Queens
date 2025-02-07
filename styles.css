@@ -1,0 +1,16 @@
+table, th, td {
+    border: 1px solid;
+  }
+
+td {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    text-align: center;
+  }
+
+  .center-container {
+    display: grid;
+    place-items: center;     /* Centers both horizontally and vertically */
+    /* height: 200px;           Optional: for demonstration of vertical centering */
+  }
