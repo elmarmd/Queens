@@ -49,16 +49,12 @@ const timerDisplay = document.getElementById("timer");
 for (i = 0; i < 10; i++) {
     while (done === false) {
         random = Math.floor(Math.random() * 10);
-        console.log(random);
         // If something exists in this column, skip
         if (rowPositions.includes(random)) {
-            console.log('Includes random');
-            console.log(rowPositions);
         // If previous row had a close queen (+1/-1 position)
         } else if (i !== 0 && Math.abs(winningPositions[i - 1] - random) <= 1) {
            // Start over if you came to the 9th position and it can't be placed due to proximity
            if (Math.abs(winningPositions[i - 1] - random) <= 1 && i >= 8) {
-            console.log('9th pos in proximity');
             rowPositions = [];
             i = 0;
            }
@@ -67,20 +63,14 @@ for (i = 0; i < 10; i++) {
             rowPositions.push(random);
             winningPositions[i] = random;
             done = true;
-            console.log(rowPositions);
         }
     }
     done = false;
 }
 
-console.log(winningPositions);
-
-
 for (i = 0; i < 10; i++) {
-    console.log(i * 10 + winningPositions[i]);
     colorsArray[i][0] = i * 10 + winningPositions[i];
 }
-console.log(colorsArray);
 
 while (n < 10000) {
     randomRow = Math.floor(Math.random() * 10);
@@ -91,31 +81,22 @@ while (n < 10000) {
     sideX = colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] - randomSide;
     sideY = colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] - randomSide * 10;
 
-    console.log(sideX);
-    console.log(sideY);
-    console.log(colorsArray);
-
     if (colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] % 10 != 0) {
         sideMax = (Math.ceil(colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] / 10)) * 10;
         sideMin = (Math.floor(colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] / 10)) * 10;
     } else {
         sideMax = 10 + (Math.ceil(colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] / 10)) * 10;
         sideMin = (Math.floor(colorsArray[randomRow][colorsArray[randomRow].length - randomCell - 1] / 10)) * 10;
-    }
-    console.log(sideMin, sideMax);
-
-    
+    }    
 
     if (randomDirection === 0) {
         if (!containsElement(sideX) && sideX >= 0 && sideX < 100 && sideX < sideMax && sideX >= sideMin) {
             colorsArray[randomRow][colorsArray[randomRow].length] = sideX;
-            console.log(sideX);
             n++;
         }
     } else {
         if (!containsElement(sideY) && sideY >= 0 && sideY < 100) {
             colorsArray[randomRow][colorsArray[randomRow].length] = sideY;
-            console.log(sideY);
             n++;
         }
     }
@@ -138,19 +119,16 @@ for (i = 0; i < 10; i++) {
         }
     }
 }
-console.log(numbersArray);
 
 for (k = 0; k < numbersArray.length; k++) {
     for (i = 0; i < 10; i++) {
         for (j = 0; j < colorsArray[i].length; j++) {
             if (colorsArray[i].includes(numbersArray[k] + 1)) {
                 colorsArray[i][colorsArray[i].length] = numbersArray[k];
-                console.log(numbersArray[k]);
                 break;
             } else if (numbersArray[k] === 99) {
                 if (colorsArray[i].includes(numbersArray[k] - 1)) {
                     colorsArray[i][colorsArray[i].length] = numbersArray[k];
-                    console.log(numbersArray[k]);
                     break;
                 }
             }
@@ -178,18 +156,13 @@ for (i = 0; i < 10; i++) {
     for (j = 0; j < colorsArray[i].length; j++) {
         if (colorsArray[i][j] < 10) {
             elementToColor = document.getElementById(`0${colorsArray[i][j]}`);
-            console.log(`0${colorsArray[i][j]}`);
         } else {
             elementToColor = document.getElementById(`${colorsArray[i][j]}`);
-            console.log(`${colorsArray[i][j]}`);
         }
         
         elementToColor.style.backgroundColor = colors[i];
     }
 }
-
-console.log(colorsArray);
-
 
 ///////////////////////////////////////////////////////////
 
@@ -206,39 +179,29 @@ document.addEventListener("click", clickHandler);
 
 function clickHandler(event) {
     if (!gameOver) {
-        console.log(event.target); // Outputs: The button element that was clicked
         let parentEl = "";
         if (event.target.tagName === 'IMG') {
             parentEl = event.target.parentElement;
-            console.log(parentEl);
         } else if (event.target.tagName === 'TD') {
             parentEl = event.target;
         }
 
         const clickedElementId = parentEl.id;
         clickedRow = Math.floor(clickedElementId / 10);
-        clickedColumn = clickedElementId % 10;
-
-        console.log(clickedRow, clickedColumn);
-        
+        clickedColumn = clickedElementId % 10;        
 
         if (parentEl.tagName === 'TD') {
-            console.log(realPositions, realPositions[clickedRow]);
             if (event.target.querySelector("img") == null && event.target.tagName !== 'IMG') {
                 if (realPositions.includes(clickedColumn) || realPositions[clickedRow] >= 0 || tooClose(clickedElementId) || sameColor(clickedElementId)) {
                     alert("Can't place the queen here!")
                 } else {
                     realPositions[clickedRow] = clickedColumn;
                     event.target.innerHTML = "<img src='queen.png' width='20' />";
-                    console.log(clickedRow, clickedColumn);
-                    console.log(realPositions);
                 }
                 
             } else {
-                console.log(parentEl);
                 realPositions[clickedRow] = -1;
                 parentEl.innerHTML = "";
-                console.log(realPositions);
             }
         }   
 
@@ -274,7 +237,6 @@ function sameColor(cell) {
     for (i = 0; i < 10; i++) {
         if (colorsArray[i].includes(+cell)) {
             currentColor = i;
-            console.log(`${i}${realPositions[i]}`, +cell, colorsArray, realPositions);
 
             for (j = 0; j < realPositions.length; j++) {
                 if (colorsArray[currentColor].includes(+`${j}${realPositions[j]}`)) {
