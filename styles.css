@@ -14,3 +14,7 @@ td {
     place-items: center;     /* Centers both horizontally and vertically */
     /* height: 200px;           Optional: for demonstration of vertical centering */
   }
+
+  .instructions {
+    width: 350px;
+  }
